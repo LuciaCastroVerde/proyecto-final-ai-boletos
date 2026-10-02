@@ -4,7 +4,7 @@ Proyecto final de IA Automation orientado a automatizar el ingreso, validación 
 
 ## Video demo
 
-https://drive.google.com/file/d/19wZ0lc1XJoi69fc23spxfUWrnFhxTJno/view?usp=sharing
+https://drive.google.com/file/d/1UEWM-hrelzsKwYovhVrtIye86gCjWgI4/view?usp=sharing
 
 ## Dashboard público
 
