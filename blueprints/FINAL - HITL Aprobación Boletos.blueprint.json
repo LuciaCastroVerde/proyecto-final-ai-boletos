@@ -1,0 +1,1663 @@
+{
+    "name": "FINAL - HITL Aprobación Boletos",
+    "flow": [
+        {
+            "id": 1,
+            "module": "airtable:TriggerWatchRecords",
+            "version": 3,
+            "parameters": {
+                "base": "app7lr27JhlVJymV5",
+                "view": "viwbeZskgewK9vS97",
+                "table": "tbljY2PtLALyPeui3",
+                "config": {
+                    "labelField": "ID_Aprobación",
+                    "triggerField": "Ultima_Modificacion"
+                },
+                "formula": "",
+                "maxRecords": 10,
+                "__IMTCONN__": 11231707,
+                "useColumnId": false
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": -1655,
+                    "y": -671
+                },
+                "setupValidation": {
+                    "result": {
+                        "valid": true,
+                        "fields": []
+                    },
+                    "version": 1,
+                    "configuration": "f3df4cc21b509812"
+                },
+                "restore": {
+                    "parameters": {
+                        "base": {
+                            "label": "Ecosistema Automatización Boletos"
+                        },
+                        "view": {
+                            "label": "Decisiones tomadas"
+                        },
+                        "table": {
+                            "label": "Aprobaciones"
+                        },
+                        "config": {
+                            "nested": {
+                                "labelField": {
+                                    "label": "ID_Aprobación"
+                                },
+                                "triggerField": {
+                                    "label": "Ultima_Modificacion"
+                                }
+                            }
+                        },
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "airtable3"
+                            },
+                            "label": "Base Final Boletos (User ID: usr4ZS0bAcwshrIZN)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:airtable3,airtable2",
+                        "label": "Connection",
+                        "required": true
+                    },
+                    {
+                        "name": "base",
+                        "type": "select",
+                        "label": "Base",
+                        "required": true
+                    },
+                    {
+                        "name": "useColumnId",
+                        "type": "boolean",
+                        "label": "Use Column ID",
+                        "required": true
+                    },
+                    {
+                        "name": "table",
+                        "type": "select",
+                        "label": "Table",
+                        "required": true
+                    },
+                    {
+                        "name": "config",
+                        "spec": [
+                            {
+                                "name": "triggerField",
+                                "type": "select",
+                                "label": "Trigger field",
+                                "required": true
+                            },
+                            {
+                                "name": "triggerField",
+                                "type": "hidden"
+                            },
+                            {
+                                "name": "labelField",
+                                "type": "select",
+                                "label": "Label field",
+                                "required": true
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Trigger configuration"
+                    },
+                    {
+                        "name": "maxRecords",
+                        "type": "integer",
+                        "label": "Limit",
+                        "required": true
+                    },
+                    {
+                        "name": "view",
+                        "type": "select",
+                        "label": "View"
+                    },
+                    {
+                        "name": "formula",
+                        "type": "text",
+                        "label": "Formula"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "id",
+                        "type": "text",
+                        "label": "ID"
+                    },
+                    {
+                        "name": "createdTime",
+                        "type": "date",
+                        "label": "Created Time"
+                    },
+                    {
+                        "name": "ID_Aprobación",
+                        "type": "number",
+                        "label": "ID_Aprobación"
+                    },
+                    {
+                        "name": "Boleto",
+                        "spec": {
+                            "label": "Record ID"
+                        },
+                        "type": "array",
+                        "label": "Boleto"
+                    },
+                    {
+                        "name": "Decisión",
+                        "type": "text",
+                        "label": "Decisión"
+                    },
+                    {
+                        "name": "Fecha_Solicitud",
+                        "time": true,
+                        "type": "date",
+                        "label": "Fecha_Solicitud"
+                    },
+                    {
+                        "name": "Fecha_Respuesta",
+                        "time": true,
+                        "type": "date",
+                        "label": "Fecha_Respuesta"
+                    },
+                    {
+                        "name": "Revisor",
+                        "type": "text",
+                        "label": "Revisor"
+                    },
+                    {
+                        "name": "Observación",
+                        "type": "text",
+                        "label": "Observación",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Slack_Thread_ID",
+                        "type": "text",
+                        "label": "Slack_Thread_ID"
+                    },
+                    {
+                        "name": "Ultima_Modificacion",
+                        "type": "date",
+                        "label": "Ultima_Modificacion"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 2,
+            "module": "builtin:BasicRouter",
+            "version": 1,
+            "mapper": null,
+            "metadata": {
+                "designer": {
+                    "x": -1373,
+                    "y": -670
+                }
+            },
+            "routes": [
+                {
+                    "flow": [
+                        {
+                            "id": 3,
+                            "module": "airtable:ActionUpdateRecords",
+                            "version": 3,
+                            "parameters": {
+                                "__IMTCONN__": 11231707
+                            },
+                            "filter": {
+                                "name": "APROBADO",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{1.`Decisión`}}",
+                                            "b": "Aprobado",
+                                            "o": "text:equal"
+                                        },
+                                        {
+                                            "a": "{{1.Fecha_Respuesta}}",
+                                            "o": "notexist"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "mapper": {
+                                "id": "{{1.Boleto[]}}",
+                                "base": "app7lr27JhlVJymV5",
+                                "table": "tbllef6XtV4THNlRg",
+                                "record": {
+                                    "fldLaeNVrSNen8xot": "Aprobado"
+                                },
+                                "typecast": false,
+                                "useColumnId": false
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": -1055,
+                                    "y": -821
+                                },
+                                "setupValidation": {
+                                    "result": {
+                                        "valid": true,
+                                        "fields": []
+                                    },
+                                    "version": 1,
+                                    "configuration": "4592b7f16bac9779"
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "base": {
+                                            "label": "Ecosistema Automatización Boletos"
+                                        },
+                                        "table": {
+                                            "label": "Boletos"
+                                        },
+                                        "record": {
+                                            "nested": {
+                                                "fld6V0qYFaxLEJMdN": {
+                                                    "mode": "edit"
+                                                },
+                                                "fldAcjp2xBGIZcB5A": {
+                                                    "mode": "edit"
+                                                },
+                                                "fldLaeNVrSNen8xot": {
+                                                    "mode": "chose",
+                                                    "label": "Aprobado"
+                                                },
+                                                "fldSnPFiMCTPrTDnc": {
+                                                    "mode": "edit"
+                                                },
+                                                "fldekQPiebyxeK64e": {
+                                                    "mode": "chose"
+                                                },
+                                                "flduE9ZqMrpby33Jv": {
+                                                    "mode": "chose"
+                                                }
+                                            }
+                                        },
+                                        "typecast": {
+                                            "mode": "chose"
+                                        },
+                                        "useColumnId": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "airtable3"
+                                            },
+                                            "label": "Base Final Boletos (User ID: usr4ZS0bAcwshrIZN)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:airtable3,airtable2",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "base",
+                                        "type": "select",
+                                        "label": "Base",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "typecast",
+                                        "type": "boolean",
+                                        "label": "Smart links",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "useColumnId",
+                                        "type": "boolean",
+                                        "label": "Use Column ID",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "table",
+                                        "type": "select",
+                                        "label": "Table",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "id",
+                                        "type": "text",
+                                        "label": "Record ID",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "record",
+                                        "spec": [
+                                            {
+                                                "name": "fld0ZX2hpzECXEAe2",
+                                                "type": "text",
+                                                "label": "ID_Boleto"
+                                            },
+                                            {
+                                                "name": "fldKltIAWJMEToMs0",
+                                                "time": false,
+                                                "type": "date",
+                                                "label": "Fecha"
+                                            },
+                                            {
+                                                "name": "fldVU8SHVNTUBJJfn",
+                                                "type": "text",
+                                                "label": "Cliente"
+                                            },
+                                            {
+                                                "mode": "edit",
+                                                "name": "fld6V0qYFaxLEJMdN",
+                                                "type": "select",
+                                                "label": "Unidad_Negocio"
+                                            },
+                                            {
+                                                "name": "fldbcFIcGHhFwLLIc",
+                                                "type": "text",
+                                                "label": "Modelo"
+                                            },
+                                            {
+                                                "name": "fldJoca1s1O1T3FXW",
+                                                "type": "text",
+                                                "label": "Submodelo"
+                                            },
+                                            {
+                                                "name": "fldGl0Yszz71gsZTi",
+                                                "type": "text",
+                                                "label": "Vendedor"
+                                            },
+                                            {
+                                                "mode": "edit",
+                                                "name": "fldAcjp2xBGIZcB5A",
+                                                "type": "select",
+                                                "label": "Contrato_PA"
+                                            },
+                                            {
+                                                "mode": "edit",
+                                                "name": "fldLaeNVrSNen8xot",
+                                                "type": "select",
+                                                "label": "Estado"
+                                            },
+                                            {
+                                                "mode": "edit",
+                                                "name": "fldSnPFiMCTPrTDnc",
+                                                "type": "select",
+                                                "label": "Resultado_IA"
+                                            },
+                                            {
+                                                "name": "fldoKeYDHfvwHA1cI",
+                                                "time": true,
+                                                "type": "date",
+                                                "label": "Fecha_Procesamiento"
+                                            },
+                                            {
+                                                "name": "fldgbDXWWQc63eWEd",
+                                                "type": "text",
+                                                "label": "Error"
+                                            },
+                                            {
+                                                "name": "fldK0K5A1WanLgnRJ",
+                                                "type": "text",
+                                                "label": "Slack_Thread_ID"
+                                            },
+                                            {
+                                                "name": "flduE9ZqMrpby33Jv",
+                                                "spec": {
+                                                    "name": "value",
+                                                    "label": "Record ID"
+                                                },
+                                                "type": "array",
+                                                "label": "Ejecuciones"
+                                            },
+                                            {
+                                                "name": "fldekQPiebyxeK64e",
+                                                "spec": {
+                                                    "name": "value",
+                                                    "label": "Record ID"
+                                                },
+                                                "type": "array",
+                                                "label": "Aprobaciones"
+                                            }
+                                        ],
+                                        "type": "collection",
+                                        "label": "Record"
+                                    }
+                                ],
+                                "interface": [
+                                    {
+                                        "name": "id",
+                                        "type": "text",
+                                        "label": "ID"
+                                    },
+                                    {
+                                        "name": "createdTime",
+                                        "type": "date",
+                                        "label": "Created Time"
+                                    },
+                                    {
+                                        "name": "ID_Boleto",
+                                        "type": "text",
+                                        "label": "ID_Boleto"
+                                    },
+                                    {
+                                        "name": "Fecha",
+                                        "time": false,
+                                        "type": "date",
+                                        "label": "Fecha"
+                                    },
+                                    {
+                                        "name": "Cliente",
+                                        "type": "text",
+                                        "label": "Cliente"
+                                    },
+                                    {
+                                        "name": "Unidad_Negocio",
+                                        "type": "text",
+                                        "label": "Unidad_Negocio"
+                                    },
+                                    {
+                                        "name": "Modelo",
+                                        "type": "text",
+                                        "label": "Modelo"
+                                    },
+                                    {
+                                        "name": "Submodelo",
+                                        "type": "text",
+                                        "label": "Submodelo"
+                                    },
+                                    {
+                                        "name": "Vendedor",
+                                        "type": "text",
+                                        "label": "Vendedor"
+                                    },
+                                    {
+                                        "name": "Contrato_PA",
+                                        "type": "text",
+                                        "label": "Contrato_PA"
+                                    },
+                                    {
+                                        "name": "Estado",
+                                        "type": "text",
+                                        "label": "Estado"
+                                    },
+                                    {
+                                        "name": "Resultado_IA",
+                                        "type": "text",
+                                        "label": "Resultado_IA"
+                                    },
+                                    {
+                                        "name": "Fecha_Procesamiento",
+                                        "time": true,
+                                        "type": "date",
+                                        "label": "Fecha_Procesamiento"
+                                    },
+                                    {
+                                        "name": "Error",
+                                        "type": "text",
+                                        "label": "Error",
+                                        "multiline": true
+                                    },
+                                    {
+                                        "name": "Slack_Thread_ID",
+                                        "type": "text",
+                                        "label": "Slack_Thread_ID"
+                                    },
+                                    {
+                                        "name": "Ejecuciones",
+                                        "spec": {
+                                            "label": "Record ID"
+                                        },
+                                        "type": "array",
+                                        "label": "Ejecuciones"
+                                    },
+                                    {
+                                        "name": "Aprobaciones",
+                                        "spec": {
+                                            "label": "Record ID"
+                                        },
+                                        "type": "array",
+                                        "label": "Aprobaciones"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 5,
+                            "module": "airtable:ActionUpdateRecords",
+                            "version": 3,
+                            "parameters": {
+                                "__IMTCONN__": 11231707
+                            },
+                            "mapper": {
+                                "id": "{{1.id}}",
+                                "base": "app7lr27JhlVJymV5",
+                                "table": "tbljY2PtLALyPeui3",
+                                "record": {
+                                    "fldHi0Exjc11nhCu9": "{{now}}"
+                                },
+                                "typecast": false,
+                                "useColumnId": false
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": -755,
+                                    "y": -821
+                                },
+                                "setupValidation": {
+                                    "result": {
+                                        "valid": true,
+                                        "fields": []
+                                    },
+                                    "version": 1,
+                                    "configuration": "62e6d022b72fc591"
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "base": {
+                                            "label": "Ecosistema Automatización Boletos"
+                                        },
+                                        "table": {
+                                            "label": "Aprobaciones"
+                                        },
+                                        "record": {
+                                            "nested": {
+                                                "fldMvEixptZldJ39m": {
+                                                    "mode": "edit"
+                                                },
+                                                "fldfDK260z3QgpxYL": {
+                                                    "mode": "chose"
+                                                }
+                                            }
+                                        },
+                                        "typecast": {
+                                            "mode": "chose"
+                                        },
+                                        "useColumnId": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "airtable3"
+                                            },
+                                            "label": "Base Final Boletos (User ID: usr4ZS0bAcwshrIZN)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:airtable3,airtable2",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "base",
+                                        "type": "select",
+                                        "label": "Base",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "typecast",
+                                        "type": "boolean",
+                                        "label": "Smart links",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "useColumnId",
+                                        "type": "boolean",
+                                        "label": "Use Column ID",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "table",
+                                        "type": "select",
+                                        "label": "Table",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "id",
+                                        "type": "text",
+                                        "label": "Record ID",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "record",
+                                        "spec": [
+                                            {
+                                                "name": "fldfDK260z3QgpxYL",
+                                                "spec": {
+                                                    "name": "value",
+                                                    "label": "Record ID"
+                                                },
+                                                "type": "array",
+                                                "label": "Boleto"
+                                            },
+                                            {
+                                                "mode": "edit",
+                                                "name": "fldMvEixptZldJ39m",
+                                                "type": "select",
+                                                "label": "Decisión"
+                                            },
+                                            {
+                                                "name": "fldDiZ5h8jSBGfJtm",
+                                                "time": true,
+                                                "type": "date",
+                                                "label": "Fecha_Solicitud"
+                                            },
+                                            {
+                                                "name": "fldHi0Exjc11nhCu9",
+                                                "time": true,
+                                                "type": "date",
+                                                "label": "Fecha_Respuesta"
+                                            },
+                                            {
+                                                "name": "fldtXMogDJsDLjH41",
+                                                "type": "text",
+                                                "label": "Revisor"
+                                            },
+                                            {
+                                                "name": "fldmgbxF3KKezlea7",
+                                                "type": "text",
+                                                "label": "Observación"
+                                            },
+                                            {
+                                                "name": "fldFlyJ2iy5D0BYFM",
+                                                "type": "text",
+                                                "label": "Slack_Thread_ID"
+                                            }
+                                        ],
+                                        "type": "collection",
+                                        "label": "Record"
+                                    }
+                                ],
+                                "interface": [
+                                    {
+                                        "name": "id",
+                                        "type": "text",
+                                        "label": "ID"
+                                    },
+                                    {
+                                        "name": "createdTime",
+                                        "type": "date",
+                                        "label": "Created Time"
+                                    },
+                                    {
+                                        "name": "ID_Aprobación",
+                                        "type": "number",
+                                        "label": "ID_Aprobación"
+                                    },
+                                    {
+                                        "name": "Boleto",
+                                        "spec": {
+                                            "label": "Record ID"
+                                        },
+                                        "type": "array",
+                                        "label": "Boleto"
+                                    },
+                                    {
+                                        "name": "Decisión",
+                                        "type": "text",
+                                        "label": "Decisión"
+                                    },
+                                    {
+                                        "name": "Fecha_Solicitud",
+                                        "time": true,
+                                        "type": "date",
+                                        "label": "Fecha_Solicitud"
+                                    },
+                                    {
+                                        "name": "Fecha_Respuesta",
+                                        "time": true,
+                                        "type": "date",
+                                        "label": "Fecha_Respuesta"
+                                    },
+                                    {
+                                        "name": "Revisor",
+                                        "type": "text",
+                                        "label": "Revisor"
+                                    },
+                                    {
+                                        "name": "Observación",
+                                        "type": "text",
+                                        "label": "Observación",
+                                        "multiline": true
+                                    },
+                                    {
+                                        "name": "Slack_Thread_ID",
+                                        "type": "text",
+                                        "label": "Slack_Thread_ID"
+                                    },
+                                    {
+                                        "name": "Ultima_Modificacion",
+                                        "type": "date",
+                                        "label": "Ultima_Modificacion"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 7,
+                            "module": "slack:CreateMessage",
+                            "version": 4,
+                            "parameters": {
+                                "__IMTCONN__": 10815819
+                            },
+                            "mapper": {
+                                "text": "Boleto APROBADO\n\nID: {{3.ID_Boleto}}\nCliente: {{3.Cliente}}\nUnidad: {{3.Unidad_Negocio}}\nModelo: {{3.Modelo}}\nVendedor: {{3.Vendedor}}\nDecisión: APROBADO\nRevisor: {{1.Revisor}}\nObservación: {{1.`Observación`}}\n\nEl boleto fue aprobado por revisión humana y puede continuar con el proceso.",
+                                "parse": false,
+                                "mrkdwn": true,
+                                "channel": "C0C3KQ75V7G",
+                                "channelType": "public",
+                                "channelWType": "list"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": -455,
+                                    "y": -821
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "parse": {
+                                            "mode": "chose"
+                                        },
+                                        "mrkdwn": {
+                                            "mode": "chose"
+                                        },
+                                        "channel": {
+                                            "mode": "chose",
+                                            "label": "gestión_boletos"
+                                        },
+                                        "link_names": {
+                                            "mode": "chose"
+                                        },
+                                        "channelType": {
+                                            "label": "Public channel"
+                                        },
+                                        "channelWType": {
+                                            "label": "Select from the list"
+                                        },
+                                        "unfurl_links": {
+                                            "mode": "chose"
+                                        },
+                                        "unfurl_media": {
+                                            "mode": "chose"
+                                        },
+                                        "reply_broadcast": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "slack2"
+                                            },
+                                            "label": "Lucía's Slack (bot) connection (consultaslc.slack.com - luciacastroverde)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:slack2,slack3",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "channelWType",
+                                        "type": "select",
+                                        "label": "Enter a channel ID or name",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "manualy",
+                                                "list"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "text",
+                                        "type": "text",
+                                        "label": "Text"
+                                    },
+                                    {
+                                        "name": "blocks",
+                                        "type": "text",
+                                        "label": "Blocks"
+                                    },
+                                    {
+                                        "name": "thread_ts",
+                                        "type": "text",
+                                        "label": "Thread message ID (time stamp)"
+                                    },
+                                    {
+                                        "name": "reply_broadcast",
+                                        "type": "boolean",
+                                        "label": "Reply broadcast"
+                                    },
+                                    {
+                                        "name": "link_names",
+                                        "type": "boolean",
+                                        "label": "Link names"
+                                    },
+                                    {
+                                        "name": "parse",
+                                        "type": "boolean",
+                                        "label": "Parse message text"
+                                    },
+                                    {
+                                        "name": "mrkdwn",
+                                        "type": "boolean",
+                                        "label": "Use markdown"
+                                    },
+                                    {
+                                        "name": "unfurl_links",
+                                        "type": "boolean",
+                                        "label": "Unfurl primarily text-based content"
+                                    },
+                                    {
+                                        "name": "unfurl_media",
+                                        "type": "boolean",
+                                        "label": "Unfurl media content"
+                                    },
+                                    {
+                                        "name": "icon_emoji",
+                                        "type": "text",
+                                        "label": "Icon emoji"
+                                    },
+                                    {
+                                        "name": "icon_url",
+                                        "type": "url",
+                                        "label": "Icon url"
+                                    },
+                                    {
+                                        "name": "username",
+                                        "type": "text",
+                                        "label": "User name"
+                                    },
+                                    {
+                                        "name": "channelType",
+                                        "type": "select",
+                                        "label": "Channel type",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "public",
+                                                "private",
+                                                "im",
+                                                "mpim"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "channel",
+                                        "type": "select",
+                                        "label": "Public channel",
+                                        "required": true
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "flow": [
+                        {
+                            "id": 4,
+                            "module": "airtable:ActionUpdateRecords",
+                            "version": 3,
+                            "parameters": {
+                                "__IMTCONN__": 11231707
+                            },
+                            "filter": {
+                                "name": "RECHAZADO",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{1.`Decisión`}}",
+                                            "b": "Rechazado",
+                                            "o": "text:equal"
+                                        },
+                                        {
+                                            "a": "{{1.Fecha_Respuesta}}",
+                                            "o": "notexist"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "mapper": {
+                                "id": "{{1.Boleto[]}}",
+                                "base": "app7lr27JhlVJymV5",
+                                "table": "tbllef6XtV4THNlRg",
+                                "record": {
+                                    "fldLaeNVrSNen8xot": "Rechazado"
+                                },
+                                "typecast": false,
+                                "useColumnId": false
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": -1055,
+                                    "y": -521
+                                },
+                                "setupValidation": {
+                                    "result": {
+                                        "valid": true,
+                                        "fields": []
+                                    },
+                                    "version": 1,
+                                    "configuration": "c219db65dc6c094d"
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "base": {
+                                            "label": "Ecosistema Automatización Boletos"
+                                        },
+                                        "table": {
+                                            "label": "Boletos"
+                                        },
+                                        "record": {
+                                            "nested": {
+                                                "fld6V0qYFaxLEJMdN": {
+                                                    "mode": "edit"
+                                                },
+                                                "fldAcjp2xBGIZcB5A": {
+                                                    "mode": "edit"
+                                                },
+                                                "fldLaeNVrSNen8xot": {
+                                                    "mode": "chose",
+                                                    "label": "Rechazado"
+                                                },
+                                                "fldSnPFiMCTPrTDnc": {
+                                                    "mode": "edit"
+                                                },
+                                                "fldekQPiebyxeK64e": {
+                                                    "mode": "chose"
+                                                },
+                                                "flduE9ZqMrpby33Jv": {
+                                                    "mode": "chose"
+                                                }
+                                            }
+                                        },
+                                        "typecast": {
+                                            "mode": "chose"
+                                        },
+                                        "useColumnId": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "airtable3"
+                                            },
+                                            "label": "Base Final Boletos (User ID: usr4ZS0bAcwshrIZN)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:airtable3,airtable2",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "base",
+                                        "type": "select",
+                                        "label": "Base",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "typecast",
+                                        "type": "boolean",
+                                        "label": "Smart links",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "useColumnId",
+                                        "type": "boolean",
+                                        "label": "Use Column ID",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "table",
+                                        "type": "select",
+                                        "label": "Table",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "id",
+                                        "type": "text",
+                                        "label": "Record ID",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "record",
+                                        "spec": [
+                                            {
+                                                "name": "fld0ZX2hpzECXEAe2",
+                                                "type": "text",
+                                                "label": "ID_Boleto"
+                                            },
+                                            {
+                                                "name": "fldKltIAWJMEToMs0",
+                                                "time": false,
+                                                "type": "date",
+                                                "label": "Fecha"
+                                            },
+                                            {
+                                                "name": "fldVU8SHVNTUBJJfn",
+                                                "type": "text",
+                                                "label": "Cliente"
+                                            },
+                                            {
+                                                "mode": "edit",
+                                                "name": "fld6V0qYFaxLEJMdN",
+                                                "type": "select",
+                                                "label": "Unidad_Negocio"
+                                            },
+                                            {
+                                                "name": "fldbcFIcGHhFwLLIc",
+                                                "type": "text",
+                                                "label": "Modelo"
+                                            },
+                                            {
+                                                "name": "fldJoca1s1O1T3FXW",
+                                                "type": "text",
+                                                "label": "Submodelo"
+                                            },
+                                            {
+                                                "name": "fldGl0Yszz71gsZTi",
+                                                "type": "text",
+                                                "label": "Vendedor"
+                                            },
+                                            {
+                                                "mode": "edit",
+                                                "name": "fldAcjp2xBGIZcB5A",
+                                                "type": "select",
+                                                "label": "Contrato_PA"
+                                            },
+                                            {
+                                                "mode": "edit",
+                                                "name": "fldLaeNVrSNen8xot",
+                                                "type": "select",
+                                                "label": "Estado"
+                                            },
+                                            {
+                                                "mode": "edit",
+                                                "name": "fldSnPFiMCTPrTDnc",
+                                                "type": "select",
+                                                "label": "Resultado_IA"
+                                            },
+                                            {
+                                                "name": "fldoKeYDHfvwHA1cI",
+                                                "time": true,
+                                                "type": "date",
+                                                "label": "Fecha_Procesamiento"
+                                            },
+                                            {
+                                                "name": "fldgbDXWWQc63eWEd",
+                                                "type": "text",
+                                                "label": "Error"
+                                            },
+                                            {
+                                                "name": "fldK0K5A1WanLgnRJ",
+                                                "type": "text",
+                                                "label": "Slack_Thread_ID"
+                                            },
+                                            {
+                                                "name": "flduE9ZqMrpby33Jv",
+                                                "spec": {
+                                                    "name": "value",
+                                                    "label": "Record ID"
+                                                },
+                                                "type": "array",
+                                                "label": "Ejecuciones"
+                                            },
+                                            {
+                                                "name": "fldekQPiebyxeK64e",
+                                                "spec": {
+                                                    "name": "value",
+                                                    "label": "Record ID"
+                                                },
+                                                "type": "array",
+                                                "label": "Aprobaciones"
+                                            }
+                                        ],
+                                        "type": "collection",
+                                        "label": "Record"
+                                    }
+                                ],
+                                "interface": [
+                                    {
+                                        "name": "id",
+                                        "type": "text",
+                                        "label": "ID"
+                                    },
+                                    {
+                                        "name": "createdTime",
+                                        "type": "date",
+                                        "label": "Created Time"
+                                    },
+                                    {
+                                        "name": "ID_Boleto",
+                                        "type": "text",
+                                        "label": "ID_Boleto"
+                                    },
+                                    {
+                                        "name": "Fecha",
+                                        "time": false,
+                                        "type": "date",
+                                        "label": "Fecha"
+                                    },
+                                    {
+                                        "name": "Cliente",
+                                        "type": "text",
+                                        "label": "Cliente"
+                                    },
+                                    {
+                                        "name": "Unidad_Negocio",
+                                        "type": "text",
+                                        "label": "Unidad_Negocio"
+                                    },
+                                    {
+                                        "name": "Modelo",
+                                        "type": "text",
+                                        "label": "Modelo"
+                                    },
+                                    {
+                                        "name": "Submodelo",
+                                        "type": "text",
+                                        "label": "Submodelo"
+                                    },
+                                    {
+                                        "name": "Vendedor",
+                                        "type": "text",
+                                        "label": "Vendedor"
+                                    },
+                                    {
+                                        "name": "Contrato_PA",
+                                        "type": "text",
+                                        "label": "Contrato_PA"
+                                    },
+                                    {
+                                        "name": "Estado",
+                                        "type": "text",
+                                        "label": "Estado"
+                                    },
+                                    {
+                                        "name": "Resultado_IA",
+                                        "type": "text",
+                                        "label": "Resultado_IA"
+                                    },
+                                    {
+                                        "name": "Fecha_Procesamiento",
+                                        "time": true,
+                                        "type": "date",
+                                        "label": "Fecha_Procesamiento"
+                                    },
+                                    {
+                                        "name": "Error",
+                                        "type": "text",
+                                        "label": "Error",
+                                        "multiline": true
+                                    },
+                                    {
+                                        "name": "Slack_Thread_ID",
+                                        "type": "text",
+                                        "label": "Slack_Thread_ID"
+                                    },
+                                    {
+                                        "name": "Ejecuciones",
+                                        "spec": {
+                                            "label": "Record ID"
+                                        },
+                                        "type": "array",
+                                        "label": "Ejecuciones"
+                                    },
+                                    {
+                                        "name": "Aprobaciones",
+                                        "spec": {
+                                            "label": "Record ID"
+                                        },
+                                        "type": "array",
+                                        "label": "Aprobaciones"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 6,
+                            "module": "airtable:ActionUpdateRecords",
+                            "version": 3,
+                            "parameters": {
+                                "__IMTCONN__": 11231707
+                            },
+                            "mapper": {
+                                "id": "{{1.id}}",
+                                "base": "app7lr27JhlVJymV5",
+                                "table": "tbljY2PtLALyPeui3",
+                                "record": {
+                                    "fldHi0Exjc11nhCu9": "{{now}}"
+                                },
+                                "typecast": false,
+                                "useColumnId": false
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": -755,
+                                    "y": -521
+                                },
+                                "setupValidation": {
+                                    "result": {
+                                        "valid": true,
+                                        "fields": []
+                                    },
+                                    "version": 1,
+                                    "configuration": "62e6d022b72fc591"
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "base": {
+                                            "label": "Ecosistema Automatización Boletos"
+                                        },
+                                        "table": {
+                                            "label": "Aprobaciones"
+                                        },
+                                        "record": {
+                                            "nested": {
+                                                "fldMvEixptZldJ39m": {
+                                                    "mode": "edit"
+                                                },
+                                                "fldfDK260z3QgpxYL": {
+                                                    "mode": "chose"
+                                                }
+                                            }
+                                        },
+                                        "typecast": {
+                                            "mode": "chose"
+                                        },
+                                        "useColumnId": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "airtable3"
+                                            },
+                                            "label": "Base Final Boletos (User ID: usr4ZS0bAcwshrIZN)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:airtable3,airtable2",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "base",
+                                        "type": "select",
+                                        "label": "Base",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "typecast",
+                                        "type": "boolean",
+                                        "label": "Smart links",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "useColumnId",
+                                        "type": "boolean",
+                                        "label": "Use Column ID",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "table",
+                                        "type": "select",
+                                        "label": "Table",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "id",
+                                        "type": "text",
+                                        "label": "Record ID",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "record",
+                                        "spec": [
+                                            {
+                                                "name": "fldfDK260z3QgpxYL",
+                                                "spec": {
+                                                    "name": "value",
+                                                    "label": "Record ID"
+                                                },
+                                                "type": "array",
+                                                "label": "Boleto"
+                                            },
+                                            {
+                                                "mode": "edit",
+                                                "name": "fldMvEixptZldJ39m",
+                                                "type": "select",
+                                                "label": "Decisión"
+                                            },
+                                            {
+                                                "name": "fldDiZ5h8jSBGfJtm",
+                                                "time": true,
+                                                "type": "date",
+                                                "label": "Fecha_Solicitud"
+                                            },
+                                            {
+                                                "name": "fldHi0Exjc11nhCu9",
+                                                "time": true,
+                                                "type": "date",
+                                                "label": "Fecha_Respuesta"
+                                            },
+                                            {
+                                                "name": "fldtXMogDJsDLjH41",
+                                                "type": "text",
+                                                "label": "Revisor"
+                                            },
+                                            {
+                                                "name": "fldmgbxF3KKezlea7",
+                                                "type": "text",
+                                                "label": "Observación"
+                                            },
+                                            {
+                                                "name": "fldFlyJ2iy5D0BYFM",
+                                                "type": "text",
+                                                "label": "Slack_Thread_ID"
+                                            }
+                                        ],
+                                        "type": "collection",
+                                        "label": "Record"
+                                    }
+                                ],
+                                "interface": [
+                                    {
+                                        "name": "id",
+                                        "type": "text",
+                                        "label": "ID"
+                                    },
+                                    {
+                                        "name": "createdTime",
+                                        "type": "date",
+                                        "label": "Created Time"
+                                    },
+                                    {
+                                        "name": "ID_Aprobación",
+                                        "type": "number",
+                                        "label": "ID_Aprobación"
+                                    },
+                                    {
+                                        "name": "Boleto",
+                                        "spec": {
+                                            "label": "Record ID"
+                                        },
+                                        "type": "array",
+                                        "label": "Boleto"
+                                    },
+                                    {
+                                        "name": "Decisión",
+                                        "type": "text",
+                                        "label": "Decisión"
+                                    },
+                                    {
+                                        "name": "Fecha_Solicitud",
+                                        "time": true,
+                                        "type": "date",
+                                        "label": "Fecha_Solicitud"
+                                    },
+                                    {
+                                        "name": "Fecha_Respuesta",
+                                        "time": true,
+                                        "type": "date",
+                                        "label": "Fecha_Respuesta"
+                                    },
+                                    {
+                                        "name": "Revisor",
+                                        "type": "text",
+                                        "label": "Revisor"
+                                    },
+                                    {
+                                        "name": "Observación",
+                                        "type": "text",
+                                        "label": "Observación",
+                                        "multiline": true
+                                    },
+                                    {
+                                        "name": "Slack_Thread_ID",
+                                        "type": "text",
+                                        "label": "Slack_Thread_ID"
+                                    },
+                                    {
+                                        "name": "Ultima_Modificacion",
+                                        "type": "date",
+                                        "label": "Ultima_Modificacion"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 8,
+                            "module": "slack:CreateMessage",
+                            "version": 4,
+                            "parameters": {
+                                "__IMTCONN__": 10815819
+                            },
+                            "mapper": {
+                                "text": "Boleto RECHAZADO\n\nID: {{4.ID_Boleto}}\nCliente: {{4.Cliente}}\nUnidad: {{4.Unidad_Negocio}}\nModelo: {{4.Modelo}}\nVendedor: {{4.Vendedor}}\nDecisión: RECHAZADO\nRevisor: {{1.Revisor}}\nObservación: {{1.`Observación`}}\n\nEl boleto fue rechazado en la revisión humana y requiere corrección antes de continuar con el proceso.",
+                                "parse": false,
+                                "mrkdwn": true,
+                                "channel": "C0C3KQ75V7G",
+                                "channelType": "public",
+                                "channelWType": "list"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": -455,
+                                    "y": -521
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "parse": {
+                                            "mode": "chose"
+                                        },
+                                        "mrkdwn": {
+                                            "mode": "chose"
+                                        },
+                                        "channel": {
+                                            "mode": "chose",
+                                            "label": "gestión_boletos"
+                                        },
+                                        "link_names": {
+                                            "mode": "chose"
+                                        },
+                                        "channelType": {
+                                            "label": "Public channel"
+                                        },
+                                        "channelWType": {
+                                            "label": "Select from the list"
+                                        },
+                                        "unfurl_links": {
+                                            "mode": "chose"
+                                        },
+                                        "unfurl_media": {
+                                            "mode": "chose"
+                                        },
+                                        "reply_broadcast": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "slack2"
+                                            },
+                                            "label": "Lucía's Slack (bot) connection (consultaslc.slack.com - luciacastroverde)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:slack2,slack3",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "channelWType",
+                                        "type": "select",
+                                        "label": "Enter a channel ID or name",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "manualy",
+                                                "list"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "text",
+                                        "type": "text",
+                                        "label": "Text"
+                                    },
+                                    {
+                                        "name": "blocks",
+                                        "type": "text",
+                                        "label": "Blocks"
+                                    },
+                                    {
+                                        "name": "thread_ts",
+                                        "type": "text",
+                                        "label": "Thread message ID (time stamp)"
+                                    },
+                                    {
+                                        "name": "reply_broadcast",
+                                        "type": "boolean",
+                                        "label": "Reply broadcast"
+                                    },
+                                    {
+                                        "name": "link_names",
+                                        "type": "boolean",
+                                        "label": "Link names"
+                                    },
+                                    {
+                                        "name": "parse",
+                                        "type": "boolean",
+                                        "label": "Parse message text"
+                                    },
+                                    {
+                                        "name": "mrkdwn",
+                                        "type": "boolean",
+                                        "label": "Use markdown"
+                                    },
+                                    {
+                                        "name": "unfurl_links",
+                                        "type": "boolean",
+                                        "label": "Unfurl primarily text-based content"
+                                    },
+                                    {
+                                        "name": "unfurl_media",
+                                        "type": "boolean",
+                                        "label": "Unfurl media content"
+                                    },
+                                    {
+                                        "name": "icon_emoji",
+                                        "type": "text",
+                                        "label": "Icon emoji"
+                                    },
+                                    {
+                                        "name": "icon_url",
+                                        "type": "url",
+                                        "label": "Icon url"
+                                    },
+                                    {
+                                        "name": "username",
+                                        "type": "text",
+                                        "label": "User name"
+                                    },
+                                    {
+                                        "name": "channelType",
+                                        "type": "select",
+                                        "label": "Channel type",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "public",
+                                                "private",
+                                                "im",
+                                                "mpim"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "channel",
+                                        "type": "select",
+                                        "label": "Public channel",
+                                        "required": true
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "metadata": {
+        "instant": false,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "us2.make.com",
+        "notes": []
+    }
+}
